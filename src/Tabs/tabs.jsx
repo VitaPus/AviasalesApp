@@ -1,12 +1,12 @@
 import React from 'react'
-import './tabs.scss'
+import classes from './tabs.module.scss'
 
 const Tabs = () => {
   return (
-    <div className="tabs">
-      <button className="active tab">Самый дешевый</button>
-      <button className="tab">Самый быстрый</button>
-      <button className="tab">Оптимальный</button>
+    <div className={classes.tabs}>
+      <button className={`${classes['active']} ${classes['tab']}`}>Самый дешевый</button>
+      <button className={classes.tab}>Самый быстрый</button>
+      <button className={classes.tab}>Оптимальный</button>
     </div>
   )
 }

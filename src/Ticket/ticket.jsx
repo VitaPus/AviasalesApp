@@ -1,32 +1,32 @@
 import React from 'react'
-import './ticket.scss'
+import classes from './ticket.module.scss'
 
 const Ticket = () => {
   return (
     <>
-    <div className="ticket">
-      <div className="price">
-        <div className="cost">13370 Р</div>
+    <div className={classes.ticket}>
+      <div className={classes.price}>
+        <div className={classes.cost}>13370 Р</div>
         <img src="//pics.avs.io/99/36/UT.png" alt="img"></img>
       </div>
-      <div className="info">
-        <div className="gray">MOW - HKT</div>
-        <div className="gray">В пути</div>
-        <div className="gray">0 пересадок</div>
+      <div className={classes.info}>
+        <div className={classes.gray}>MOW - HKT</div>
+        <div className={classes.gray}>В пути</div>
+        <div className={classes.gray}>0 пересадок</div>
         <div>19:47-10:24</div>
         <div>14ч 37м</div>
         <div></div>
       </div>
-      <div className="info">
-        <div className="gray">MOW - HKT</div>
-        <div className="gray">В пути</div>
-        <div className="gray">0 пересадок</div>
+      <div className={classes.info}>
+        <div className={classes.gray}>MOW - HKT</div>
+        <div className={classes.gray}>В пути</div>
+        <div className={classes.gray}>0 пересадок</div>
         <div>19:47-10:24</div>
         <div>14ч 37м</div>
         <div></div>
       </div>
     </div>
-    <button className="moreticket">5 билетов</button>
+    <button className={classes.moreticket}>5 билетов</button>
     </>
   )
 }

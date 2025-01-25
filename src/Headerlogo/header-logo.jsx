@@ -1,8 +1,8 @@
 import React from "react";
-import "./header-logo.scss"
+import classes from "./header-logo.module.scss"
 
 const Headerlogo = () => {
-    return <section className="logo"> <svg width="82" height="89" viewBox="0 0 82 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+    return <section className={classes.logo}> <svg width="82" height="89" viewBox="0 0 82 89" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#filter0_d_1_705)">
       <path 
         fillRule="evenodd" 
