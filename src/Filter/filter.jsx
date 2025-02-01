@@ -1,33 +1,46 @@
-import React from "react";
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleFilter, toggleAllFilters } from '../reducer.js'
 
-import classes from "./filter.module.scss"
+import classes from './filter.module.scss'
 
 const Filter = () => {
-    return (
-        <div className={classes.filter}>
-            <div className={classes.title}>КОЛИЧЕСТВО ПЕРЕСАДОК</div>
-            <div className={classes.checkbox}>
-                <input type="checkbox" />
-                <span>Все</span>
-            </div>
-            <div className={classes.checkbox}>
-                <input type="checkbox" />
-                <span>Без пересадок</span>
-            </div>
-            <div className={classes.checkbox}>
-                <input type="checkbox" />
-                <span>1 пересадка</span>
-            </div>
-            <div className={classes.checkbox}>
-                <input type="checkbox" />
-                <span>2 пересадки</span>
-            </div>
-            <div className={classes.checkbox}>
-                <input type="checkbox" />
-                <span>3 пересадки</span>
-            </div>
-        </div>
-    )
+  const dispatch = useDispatch()
+  const filters = useSelector((state) => state.filters)
+
+  const handleAllChange = () => {
+    dispatch(toggleAllFilters())
+  }
+
+  const handleCheckboxChange = (filter) => {
+    dispatch(toggleFilter(filter))
+  }
+
+  return (
+    <div className={classes.filter}>
+      <div className={classes.title}>КОЛИЧЕСТВО ПЕРЕСАДОК</div>
+      <div className={classes.checkbox}>
+        <input type="checkbox" checked={filters.all} onChange={handleAllChange} />
+        <span>Все</span>
+      </div>
+      <div className={classes.checkbox}>
+        <input type="checkbox" checked={filters.direct} onChange={() => handleCheckboxChange('direct')} />
+        <span>Без пересадок</span>
+      </div>
+      <div className={classes.checkbox}>
+        <input type="checkbox" checked={filters.oneStop} onChange={() => handleCheckboxChange('oneStop')} />
+        <span>1 пересадка</span>
+      </div>
+      <div className={classes.checkbox}>
+        <input type="checkbox" checked={filters.twoStops} onChange={() => handleCheckboxChange('twoStops')} />
+        <span>2 пересадки</span>
+      </div>
+      <div className={classes.checkbox}>
+        <input type="checkbox" checked={filters.threeStops} onChange={() => handleCheckboxChange('threeStops')} />
+        <span>3 пересадки</span>
+      </div>
+    </div>
+  )
 }
 
 export default Filter
