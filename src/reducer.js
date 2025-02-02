@@ -17,32 +17,29 @@ export const fetchId = createAsyncThunk('filters/fetchId', async function () {
 
   const data = await responce.json()
   return data
-});
+})
 
-export const fetchTickets = createAsyncThunk(
-    'filters/fetchTickets',
-    async (_, {getState, rejectedWithValue}) => {
-        const {searchId} = getState().filters;
-        if (!searchId) return rejectedWithValue('Нет searchId');
-        
-        let allTickets = [];
-        let stop = false;
+export const fetchTickets = createAsyncThunk('filters/fetchTickets', async (_, { getState, rejectedWithValue }) => {
+  const { searchId } = getState().filters
+  if (!searchId) return rejectedWithValue('Нет searchId')
 
-        while (!stop) {
-            try {
-                const responce= await fetch('https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`');
-                if (!responce.ok) throw new Error('Ошибка запроса');
+  let stop = false
 
-                const data = await responce.json();
-                allTickets = [...allTickets, ... data.tickets];
-                stop = data.stop;
-            } catch (error) {
-                return rejectedWithValue('Ошибка при загрузке билетов');
-            }
-        }
-        return allTickets;
+  while (!stop) {
+    try {
+      const responce = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`)
+      if (!responce.ok) throw new Error('Ошибка запроса')
+
+      const data = await responce.json()
+      stop = data.stop
+      return data.tickets
+    } catch (error) {
+      console.error('Ошибка загрузки билетов, но продолжаем:', error)
+        break // Прерываем цикл, но возвращаем уже загруженные билеты
     }
-)
+  }
+  return []
+})
 
 const filterSlice = createSlice({
   name: 'filters',
@@ -51,7 +48,7 @@ const filterSlice = createSlice({
     toggleFilter: (state, action) => {
       state[action.payload] = !state[action.payload]
       state.all = Object.values(state)
-        .slice(1)
+        .slice(all)
         .every((val) => val)
     },
     toggleAllFilters: (state) => {
@@ -69,17 +66,17 @@ const filterSlice = createSlice({
         console.error('Ошибка при получении ID')
       })
       .addCase(fetchTickets.pending, (state) => {
-        state.loading = true;
+        state.loading = true
         state.error = null
       })
       .addCase(fetchTickets.fulfilled, (state, action) => {
-        console.log('Загружено билетов:', action.payload.length)
-        state.tickets = action.payload;
-        state.loading = false;
+        console.log('Добавлено билетов:', action.payload.length)
+        state.tickets = [...state.tickets, ...action.payload]
+        state.loading = false
       })
       .addCase(fetchTickets.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.loading = false
+        state.error = action.payload
       })
   },
 })

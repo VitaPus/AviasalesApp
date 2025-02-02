@@ -3,7 +3,7 @@ import Headerlogo from '../Headerlogo'
 import Filter from '../Filter'
 import { fetchId, fetchTickets } from '../reducer'
 import classes from './app.module.scss'
-import Ticket from '../Ticket/ticket'
+import TicketList from '../TicketList/ticketlist'
 import Tabs from '../Tabs/tabs'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -28,7 +28,7 @@ const App = () => {
         <Filter />
         <div>
           <Tabs />
-          <Ticket />
+          <TicketList />
         </div>
       </div>
     </>
