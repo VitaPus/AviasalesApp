@@ -1,6 +1,6 @@
 .filter {
     width: 232px;
-    height: 252px;
+    height: 270px;
     background-color: #fff;
     border-radius: 5px;
     margin-left: 103px;
@@ -23,3 +23,31 @@
 input[type="checkbox"] {
     cursor: pointer;
 }
+
+.customcheckbox {
+    width: 20px;
+    height: 20px;
+    appearance: none; /* Убираем стандартное оформление */
+    background-color: white; /* Белый фон внутри */
+    border: 1px solid #2196F3; /* Чёрная рамка */
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .customcheckbox:checked {
+    background-color: white; /* Белый фон остаётся */
+    border: 1px solid #2196F3;
+  }
+  
+  .customcheckbox:checked::after {
+    content: "✓"; /* Галочка */
+    font-size: 14px;
+    font-weight: bold;
+    color: #2196F3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  

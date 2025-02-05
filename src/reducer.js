@@ -1,45 +1,62 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-  all: false,
-  direct: false,
-  oneStop: false,
-  twoStops: false,
-  threeStops: false,
+  all: true,
+  direct: true,
+  oneStop: true,
+  twoStops: true,
+  threeStops: true,
   searchId: null,
   error: null,
   tickets: [],
   loading: false,
+  sortType: 'cheapest',
 }
 
-export const fetchId = createAsyncThunk('filters/fetchId', async function () {
-  const responce = await fetch('https://aviasales-test-api.kata.academy/search')
-
-  const data = await responce.json()
-  return data
+// Получаем searchId
+export const fetchId = createAsyncThunk('filters/fetchId', async () => {
+  const response = await fetch('https://aviasales-test-api.kata.academy/search')
+  if (!response.ok) throw new Error('Ошибка получения searchId')
+  return await response.json()
 })
 
-export const fetchTickets = createAsyncThunk('filters/fetchTickets', async (_, { getState, rejectedWithValue }) => {
-  const { searchId } = getState().filters
-  if (!searchId) return rejectedWithValue('Нет searchId')
+// Загружаем билеты по мере поступления
+export const fetchTickets = createAsyncThunk(
+  'filters/fetchTickets',
+  async (_, { getState, dispatch, rejectWithValue }) => {
+    const { searchId } = getState().filters
+    if (!searchId) return rejectWithValue('Нет searchId')
 
-  let stop = false
+    let stop = false
+    let attempts = 0
 
-  while (!stop) {
-    try {
-      const responce = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`)
-      if (!responce.ok) throw new Error('Ошибка запроса')
+    while (!stop && attempts < 10) {
+      try {
+        const response = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`)
+        if (!response.ok) throw new Error(`Ошибка запроса: ${response.status}`)
 
-      const data = await responce.json()
-      stop = data.stop
-      return data.tickets
-    } catch (error) {
-      console.error('Ошибка загрузки билетов, но продолжаем:', error)
-        break // Прерываем цикл, но возвращаем уже загруженные билеты
+        const data = await response.json()
+        if (!Array.isArray(data.tickets)) throw new Error('Неверный формат данных')
+
+        dispatch(addTickets(data.tickets)) // ✅ Добавляем билеты сразу
+        stop = data.stop
+      } catch (error) {
+        console.error('Ошибка загрузки билетов:', error)
+
+        if (error.name === 'TypeError') {
+          return rejectWithValue('Проблемы с интернетом. Проверьте подключение.')
+        }
+
+        attempts++
+        if (attempts >= 10) {
+          return rejectWithValue('Не удалось загрузить билеты после нескольких попыток.')
+        }
+      }
     }
+
+    return { stop } 
   }
-  return []
-})
+)
 
 const filterSlice = createSlice({
   name: 'filters',
@@ -47,13 +64,21 @@ const filterSlice = createSlice({
   reducers: {
     toggleFilter: (state, action) => {
       state[action.payload] = !state[action.payload]
-      state.all = Object.values(state)
-        .slice(all)
-        .every((val) => val)
+      state.all = state.direct && state.oneStop && state.twoStops && state.threeStops
     },
     toggleAllFilters: (state) => {
       const newState = !state.all
-      Object.keys(state).forEach((key) => (state[key] = newState))
+      state.direct = newState
+      state.oneStop = newState
+      state.twoStops = newState
+      state.threeStops = newState
+      state.all = newState
+    },
+    setSortType: (state, action) => {
+      state.sortType = action.payload
+    },
+    addTickets: (state, action) => {
+      state.tickets = [...state.tickets, ...action.payload] // ✅ Добавляем билеты постепенно
     },
   },
   extraReducers: (builder) => {
@@ -62,17 +87,18 @@ const filterSlice = createSlice({
         console.log('ID получен:', action.payload)
         state.searchId = action.payload.searchId
       })
-      .addCase(fetchId.rejected, () => {
-        console.error('Ошибка при получении ID')
+      .addCase(fetchId.rejected, (state, action) => {
+        state.error = action.error.message
+        console.error('Ошибка при получении ID:', action.error.message)
       })
       .addCase(fetchTickets.pending, (state) => {
         state.loading = true
         state.error = null
       })
       .addCase(fetchTickets.fulfilled, (state, action) => {
-        console.log('Добавлено билетов:', action.payload.length)
-        state.tickets = [...state.tickets, ...action.payload]
-        state.loading = false
+        if (action.payload.stop) {
+          state.loading = false // ✅ Останавливаем `loading`, когда загрузка завершена
+        }
       })
       .addCase(fetchTickets.rejected, (state, action) => {
         state.loading = false
@@ -81,5 +107,5 @@ const filterSlice = createSlice({
   },
 })
 
-export const { toggleFilter, toggleAllFilters } = filterSlice.actions
+export const { toggleFilter, toggleAllFilters, setSortType, addTickets } = filterSlice.actions
 export default filterSlice.reducer
