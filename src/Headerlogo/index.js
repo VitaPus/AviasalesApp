@@ -1,2 +1,2 @@
-import Headerlogo from "./header-logo";
+import Headerlogo from './header-logo'
 export default Headerlogo

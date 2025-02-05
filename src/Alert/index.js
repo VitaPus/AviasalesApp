@@ -1,2 +1,2 @@
-import AlertMessage from "./alert";
+import AlertMessage from './alert'
 export default AlertMessage

@@ -54,7 +54,7 @@ export const fetchTickets = createAsyncThunk(
       }
     }
 
-    return { stop } 
+    return { stop }
   }
 )
 

@@ -4,7 +4,8 @@ import { Flex, Spin } from 'antd'
 import classes from './spin.module.scss'
 const Spinn = () => (
   <Flex align="center" gap="middle">
-    <Spin className={classes.spin}
+    <Spin
+      className={classes.spin}
       indicator={
         <LoadingOutlined
           style={{

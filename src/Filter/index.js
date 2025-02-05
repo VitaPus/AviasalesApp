@@ -1,2 +1,2 @@
-import Filter from "./filter";
+import Filter from './filter'
 export default Filter

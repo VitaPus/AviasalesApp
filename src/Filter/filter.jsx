@@ -24,19 +24,39 @@ const Filter = () => {
         <span>Все</span>
       </div>
       <div className={classes.checkbox}>
-        <input type="checkbox" className={classes.customcheckbox} checked={filters.direct} onChange={() => handleCheckboxChange('direct')} />
+        <input
+          type="checkbox"
+          className={classes.customcheckbox}
+          checked={filters.direct}
+          onChange={() => handleCheckboxChange('direct')}
+        />
         <span>Без пересадок</span>
       </div>
       <div className={classes.checkbox}>
-        <input type="checkbox" className={classes.customcheckbox} checked={filters.oneStop} onChange={() => handleCheckboxChange('oneStop')} />
+        <input
+          type="checkbox"
+          className={classes.customcheckbox}
+          checked={filters.oneStop}
+          onChange={() => handleCheckboxChange('oneStop')}
+        />
         <span>1 пересадка</span>
       </div>
       <div className={classes.checkbox}>
-        <input type="checkbox" className={classes.customcheckbox} checked={filters.twoStops} onChange={() => handleCheckboxChange('twoStops')} />
+        <input
+          type="checkbox"
+          className={classes.customcheckbox}
+          checked={filters.twoStops}
+          onChange={() => handleCheckboxChange('twoStops')}
+        />
         <span>2 пересадки</span>
       </div>
       <div className={classes.checkbox}>
-        <input type="checkbox" className={classes.customcheckbox} checked={filters.threeStops} onChange={() => handleCheckboxChange('threeStops')} />
+        <input
+          type="checkbox"
+          className={classes.customcheckbox}
+          checked={filters.threeStops}
+          onChange={() => handleCheckboxChange('threeStops')}
+        />
         <span>3 пересадки</span>
       </div>
     </div>

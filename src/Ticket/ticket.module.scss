@@ -1,33 +1,32 @@
 .ticket {
-    width: 482px;
-    height: 184px;
-    background-color: #fff;
-    margin: 20px 0;
-    padding: 20px;
-    border-radius: 5px;
+  width: 482px;
+  height: 184px;
+  background-color: #fff;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 5px;
 }
 
 .price {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .info {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto auto;
-    justify-content: space-between;
-    justify-items: first baseline;
-    margin-bottom: 20px;
-    margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
+  justify-content: space-between;
+  justify-items: first baseline;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .gray {
-    color: gray;
+  color: gray;
 }
 
 .cost {
-    color: #0d9cfb;
-    font-size: 27px;
+  color: #0d9cfb;
+  font-size: 27px;
 }
-

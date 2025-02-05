@@ -53,7 +53,7 @@ const TicketList = () => {
 
       {/* ✅ Показываем билеты и спиннер одновременно */}
       {loading && (
-        <div  className={classes.loading}>
+        <div className={classes.loading}>
           <Spinn />
         </div>
       )}
